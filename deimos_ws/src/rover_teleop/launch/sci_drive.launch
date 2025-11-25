@@ -1,0 +1,24 @@
+<launch>
+    <!-- Start joy and remap controller js0 to specific node, this is for 2 controller operation mode -->
+    <group>
+        <remap from='joy' to='j0'/>
+        <node pkg='joy' name='joy0' type='joy_node'>
+            <param name='dev' type='string' value='/dev/input/js0'/>
+        </node>
+    </group>
+    <!-- Start joy and remap controller js0 to specific node, this is for 2 controller operation mode -->
+    <group>
+        <remap from='joy' to='j1'/>
+        <node pkg='joy' name='joy1' type='joy_node'>
+            <param name='dev' type='string' value='/dev/input/js1'/>
+        </node>
+    </group>
+    
+    <!-- Start the f310_twist node to publish twist messages to drivetrain -->
+    <node pkg="rover_teleop" type="f310_twist.py" name="f310_twist" output="screen" />
+    
+    <!-- Start the arm_teleop node to publish pwm to the arm controller -->
+    <node pkg="rover_teleop" type="sci_teleop.py" name="sci_teleop" output="screen" launch-prefix="python3"/>
+
+
+</launch>

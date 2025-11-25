@@ -1,0 +1,34 @@
+<launch>
+  <node name="rplidarNode" pkg="rplidar_ros" type="rplidarNode" output="screen">
+    <param name="frame_id" type="string" value="laser_frame"/>
+    <param name="inverted" type="bool" value="false"/>
+    <param name="angle_compensate" type="bool" value="true"/>
+  </node>
+
+  <!-- RealSense -->
+  <include file="$(find rover_teleop)/launch/realsense_bringup.launch">
+    <arg name="serial_no" value=""/>
+    <arg name="json_file_path" value=""/>
+    <arg name="camera" value="camera"/>
+  </include>
+
+  <!-- RealSense to PointCloud -->
+  <node name="realsense_pointcloud_node" pkg="rover_teleop" type="realsense_to_pointcloud" output="screen"/>
+
+  <!-- Static TFs -->
+  <node pkg="tf2_ros" type="static_transform_publisher" name="tf_base_to_laser"
+        args="0.36 -0.3 0.53 0 0 0 base_link laser_frame"/>
+
+  <node pkg="tf2_ros" type="static_transform_publisher" name="tf_base_to_camera"
+        args="0.36 -0.3 0.53 0 0 0 base_link camera_link"/>
+
+  <node pkg="tf2_ros" type="static_transform_publisher" name="tf_camera_to_depth"
+        args="0.0 0.0 0.0 0 0 0 camera_link camera_depth_frame"/>
+
+  <!-- URDF & robot_state_publisher -->
+  <param name="robot_description" command="cat $(find rover_teleop)/config/rover.xml"/>
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+  <!-- Odometry TF Broadcaster -->
+  <node pkg="rover_teleop" type="odom_publisher.py" name="odom_publisher" output="screen" />
+</launch>

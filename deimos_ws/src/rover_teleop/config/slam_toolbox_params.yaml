@@ -1,0 +1,36 @@
+mode: online
+# Sensor topic(s) - already remapped in the launch file
+# scan_topic: /your_laser_scan_topic
+
+# Fixed frames
+odom_frame: odom
+base_frame: base_link
+map_frame: map
+
+# Update rate for the filter
+update_period: 1.0
+
+# Maximum range to consider
+max_range: 10.0
+
+# Minimum range to consider
+min_range: 0.05
+
+# Parameters for the adaptive size loop closure
+loop_closure_adaptive_size: true
+loop_closure_search_radius: 2.0
+loop_closure_search_angle: 0.785 # 45 degrees
+
+# Parameters for the correlation matching
+correlation_search_space_size: 20
+correlation_search_space_resolution: 0.05
+correlation_threshold: 0.6
+
+# Parameters for the particle filter
+resample_threshold: 0.5
+particles: 30
+
+# Map parameters
+map_update_interval: 0.5
+map_resolution: 0.05
+map_size: 2048

@@ -1,0 +1,8 @@
+<launch>
+    <!-- Start the joystick node -->
+    <node pkg="joy" type="joy_node" name="joy_node" output="screen" />
+
+    <!-- Launch the sci_teleop node -->
+    <node name="sci_teleop" pkg="rover_teleop" type="sci_teleop.py" output="screen"/>
+
+</launch>

@@ -1,0 +1,11 @@
+scan_filter_chain:
+- name: box_filter
+  type: laser_filters/LaserScanBoxFilter
+  params:
+    box_frame: base_link  # or your correct robot base frame
+    min_x: -0.55
+    max_x:  0.55
+    min_y: -0.575
+    max_y:  0.575
+    min_z: -0.2
+    max_z:  2.0

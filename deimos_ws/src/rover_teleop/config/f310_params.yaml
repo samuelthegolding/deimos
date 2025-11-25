@@ -1,0 +1,29 @@
+# Button mappings (optional, if you're using buttons for other commands)
+button_0_to_degrees:   
+  button_index: 0
+  position: 0.0         # Position for 0 degrees (could be used for another control)
+  
+button_1_to_degrees:   
+  button_index: 1
+  position: 180.0       # Position for 180 degrees (could be used for another control)
+
+# Axis mappings for controlling the motors
+joystick_axis_forward_backward:  # Vertical axis (up-down movement)
+  axis_index: 1
+  min_value: -1.0   # Minimum joystick value (full backward)
+  max_value: 1.0    # Maximum joystick value (full forward)
+  min_pwm: 1000     # Minimum PWM value (stop or reverse)
+  max_pwm: 2000     # Maximum PWM value (full forward)
+
+joystick_axis_left_right:  # Horizontal axis (left-right turning)
+  axis_index: 0
+  min_value: -1.0   # Minimum joystick value (full left)
+  max_value: 1.0    # Maximum joystick value (full right)
+  min_pwm: 1000     # Minimum PWM value (left motor reverse, right motor forward)
+  max_pwm: 2000     # Maximum PWM value (left motor forward, right motor reverse)
+
+# Single output topic for publishing PWM values to both motors
+output_topic_pwm: "/motor_pwm"
+
+
+

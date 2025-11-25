@@ -1,0 +1,44 @@
+<launch>
+
+  <node pkg="rosserial_python" type="serial_node.py" name="drive" output="screen">
+    <param name="port" value="/dev/ttyACM1" />
+    <param name="baud" value="57600" />
+  </node>
+
+  <node pkg="laser_filters" type="scan_to_scan_filter_chain" name="scan_filter" output="screen">
+    <remap from="scan" to="/scan"/>
+    <remap from="scan_filtered" to="/scan_filtered"/>
+    <rosparam file="$(find rover_teleop)/config/laser_filter_chain.yaml" command="load"/>
+  </node>
+
+  <node pkg="slam_toolbox" type="async_slam_toolbox_node" name="slam_toolbox" output="screen">
+    <param name="odom_frame" value="odom"/>
+    <param name="base_frame" value="base_link"/>
+    <param name="map_frame" value="map"/>
+    <rosparam file="$(find rover_teleop)/config/slam_toolbox_params.yaml" command="load"/>
+    <remap from="scan" to="/scan_filtered"/>
+  </node>
+
+  <node pkg="rosserial_python" type="serial_node.py" name="odom" output="screen">
+    <param name="port" value="/dev/ttyACM0" />
+    <param name="baud" value="57600" />
+  </node>
+
+  <arg name="map_file" default="$(find rover_teleop)/staticroom1.yaml" />
+  <arg name="initial_pose_x" default="0.0" />
+  <arg name="initial_pose_y" default="0.0" />
+  <arg name="initial_pose_a" default="0.0" />
+
+  <include file="$(find rover_teleop)/launch/robot_config.launch" />
+
+  <node name="map_server" pkg="map_server" type="map_server" args="$(find rover_teleop)/maps/staticroom1.yaml" />
+
+  <include file="$(find rover_teleop)/launch/amcl.launch">
+    <arg name="initial_pose_x" value="$(arg initial_pose_x)" />
+    <arg name="initial_pose_y" value="$(arg initial_pose_y)" />
+    <arg name="initial_pose_a" value="$(arg initial_pose_a)" />
+  </include>
+
+  <include file="$(find rover_teleop)/launch/move_base.launch" />
+
+</launch>

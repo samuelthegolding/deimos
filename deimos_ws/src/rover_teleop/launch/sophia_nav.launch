@@ -1,0 +1,41 @@
+<launch>
+
+   <!-- Serial node for drive -->
+  <node pkg="rosserial_python" type="serial_node.py" name="drive" output="screen">
+      <param name="port" value="/dev/ttyACM1" />
+      <param name="baud" value="57600" />
+  </node>
+
+   <!-- Serial node for odometry -->
+  <node pkg="rosserial_python" type="serial_node.py" name="odom" output="screen">
+      <param name="port" value="/dev/ttyACM2" />
+      <param name="baud" value="57600" />
+  </node>
+
+  <!-- ======== Arguments ======== -->
+  <arg name="map_file" default="$(find rover_teleop)/staticroom1.yaml" />
+  <arg name="initial_pose_x" default="0.0" />
+  <arg name="initial_pose_y" default="0.0" />
+  <arg name="initial_pose_a" default="0.0" />
+  <arg name="scan_topic" default="/scan" />
+
+  <!-- ======== Bring up your robot config (URDF, TF, base node, etc.) ======== -->
+  <include file="$(find rover_teleop)/launch/robot_config.launch" />
+
+  <!-- ======== Map Server (for loading the map) ======== -->
+  <node name="map_server" pkg="map_server" type="map_server" args="$(find rover_teleop)/maps/staticroom1.yaml" />
+
+  <!-- ======== AMCL for Localization ======== -->
+  <include file="$(find rover_teleop)/launch/amcl.launch">
+    <!-- Optionally pass arguments for initial pose -->
+    <arg name="initial_pose_x" value="$(arg initial_pose_x)" />
+    <arg name="initial_pose_y" value="$(arg initial_pose_y)" />
+    <arg name="initial_pose_a" value="$(arg initial_pose_a)" />
+  </include>
+
+  <!-- ======== Move Base (Path Planning) ======== -->
+  <include file="$(find rover_teleop)/launch/move_base.launch" />
+
+  <!-- ======== RViz for visualization ======== -->
+  <node name="rviz" pkg="rviz" type="rviz" output="screen" args="-d $(find rover_teleop)/config/sophia_nav.rviz" />
+</launch>

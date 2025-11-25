@@ -1,0 +1,12 @@
+<launch>
+    <!-- Start the joystick node -->
+    <node pkg="joy" type="joy_node" name="joy_node" output="screen" />
+
+    <!-- Load YAML configuration -->
+    <rosparam file="$(find rover_teleop)/config/f310_params.yaml" command="load" />
+
+    <!-- Start the joystick to PWM mapping node -->
+    <node pkg="rover_teleop" type="f310_commands.py" name="f310_commands" output="screen" />
+    
+</launch>
+

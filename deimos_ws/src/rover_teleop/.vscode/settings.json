@@ -1,0 +1,10 @@
+{
+    "python.autoComplete.extraPaths": [
+        "/home/sophiabase/sophia_ws/devel/lib/python3.8/site-packages",
+        "/home/sophiabase/.local/share/mamba/envs/noetic_env/lib/python3.8/site-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/home/sophiabase/sophia_ws/devel/lib/python3.8/site-packages",
+        "/home/sophiabase/.local/share/mamba/envs/noetic_env/lib/python3.8/site-packages"
+    ]
+}
